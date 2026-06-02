@@ -1,5 +1,14 @@
 # AutoBrief — Demo video shot list (≤3 min)
 
+> **Fastest path (one click):** open `docs/demo_deck.html` in Chrome, start your
+> screen recorder on that tab, and click **▶ Play narrated demo**. The deck
+> auto-advances and narrates itself (browser speech) end-to-end — no reading, no
+> clicking. Optionally intercut a few seconds of the live UI
+> (https://autobrief-g36me2m3ca-uc.a.run.app/dev-ui/?app=autobrief) over the
+> architecture/approval beats. The manual shot list and word-for-word script below
+> are for a hand-narrated version if you prefer.
+
+
 Narrate the business case throughout: a solo studio drowning in intake.
 
 | # | Time | Shot | Narration beat |

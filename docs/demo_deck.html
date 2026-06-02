@@ -31,9 +31,21 @@
   .pill { background:#fff; border:1px solid #d8e0ea; border-radius:10px; padding:.8em 1em; margin:.4em 0; }
   a { color:var(--accent); }
   .foot { position:fixed; right:14px; bottom:10px; color:#9fb0c3; font-size:.85rem; }
+  /* self-running presentation controls */
+  #play { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:50;
+    background:var(--accent); color:#fff; border:0; border-radius:14px; padding:1.1em 2em;
+    font-size:1.4rem; cursor:pointer; box-shadow:0 12px 40px rgba(0,0,0,.4); }
+  #play small { display:block; font-size:.85rem; opacity:.85; margin-top:.4em; font-weight:400; }
+  body.playing section { transition: opacity .4s; }
+  body.playing section:not(.current) { opacity:.18; }
+  .cc { position:fixed; left:0; right:0; bottom:0; z-index:40; background:rgba(11,19,32,.92);
+    color:#fff; padding:.9em 7vw; font-size:1.25rem; line-height:1.45; display:none; }
+  body.playing .cc { display:block; }
 </style>
 </head>
 <body>
+<button id="play">▶ Play narrated demo<small>self-advancing + spoken — just screen-record this tab</small></button>
+<div class="cc" id="cc"></div>
 <div class="deck">
 
   <section>
@@ -123,5 +135,63 @@
 
 </div>
 <div class="foot">AutoBrief · scroll / arrow-down to advance</div>
+
+<script>
+(function () {
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section'));
+  var NARR = [
+    "AutoBrief — an autonomous client-intake and proposal agent, built on Google ADK and Gemini on Vertex AI, for a one-person AI MVP studio.",
+    "For a solo founder, the bottleneck isn't building — it's winning the work. Every inquiry is three to five hours of reading, researching, scoping, pricing, and writing a proposal, before any contract.",
+    "AutoBrief takes a raw client email, triages it, researches the client, prices it with a deterministic rubric, writes a proposal, and only after a human approves, drafts the reply, calendar invite, Drive doc, and deck. Three to five hours becomes about one minute of compute, plus a quick review.",
+    "The architecture: a router classifier triages into decline, clarify, or proceed. Proceed runs a sequential pipeline — intake, research with cited web search, a scoper-estimator, the proposal writer, and a human-gated delivery agent.",
+    "The key idea is deterministic pricing. The model only classifies — archetype, features, complexity. Every dollar and week is computed by a Python tool over the rubric, so quotes are reproducible and auditable, with no hallucinated prices.",
+    "Real guardrails: nothing is sent automatically. Gmail only drafts, and all four write tools each require a human approval. Plus price-consistency, P-I-I redaction, prompt-injection framing, and full Cloud Trace observability.",
+    "On an eight-case evaluation on Vertex, AutoBrief scores one hundred percent on routing, archetype, and price-in-band, with a perfect scope match — about sixty-six seconds per case.",
+    "The impact: three to five hours drops to about a minute. Cost per proposal falls from hundreds of dollars of founder time to about five cents. And it's directly resellable as software to any agency with the same bottleneck.",
+    "Try it yourself at the live Cloud Run URL, and the full source is on GitHub. That's AutoBrief — built with Google ADK and Gemini on Vertex AI."
+  ];
+  var FALLBACK_MS = 7000;
+  var cc = document.getElementById('cc');
+  var playBtn = document.getElementById('play');
+  var synth = window.speechSynthesis;
+
+  function show(i) {
+    sections.forEach(function (s, j) { s.classList.toggle('current', j === i); });
+    sections[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    cc.textContent = NARR[i] || '';
+  }
+
+  function speak(i) {
+    return new Promise(function (resolve) {
+      var done = false;
+      var finish = function () { if (!done) { done = true; resolve(); } };
+      var timer = setTimeout(finish, FALLBACK_MS + (NARR[i] ? NARR[i].length * 55 : 0));
+      if (synth && window.SpeechSynthesisUtterance && NARR[i]) {
+        var u = new SpeechSynthesisUtterance(NARR[i]);
+        u.rate = 1.0; u.pitch = 1.0;
+        u.onend = function () { clearTimeout(timer); finish(); };
+        u.onerror = function () { clearTimeout(timer); finish(); };
+        try { synth.cancel(); synth.speak(u); } catch (e) { /* fallback timer */ }
+      }
+    });
+  }
+
+  async function run() {
+    document.body.classList.add('playing');
+    playBtn.style.display = 'none';
+    for (var i = 0; i < sections.length; i++) {
+      show(i);
+      await new Promise(function (r) { setTimeout(r, 600); });
+      await speak(i);
+      await new Promise(function (r) { setTimeout(r, 500); });
+    }
+    document.body.classList.remove('playing');
+    cc.style.display = 'none';
+  }
+
+  playBtn.addEventListener('click', run);
+  // Keyboard: space/right also starts; arrows still scroll manually otherwise.
+})();
+</script>
 </body>
 </html>
