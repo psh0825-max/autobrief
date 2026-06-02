@@ -1,6 +1,6 @@
 # AutoBrief — Build Status & Resume Guide
 
-_Last saved: 2026-06-02 (end of Day 1). Submission deadline: **2026-06-05 17:00**._
+_Last saved: 2026-06-02 (Day 2). Submission deadline: **2026-06-05 17:00**._
 
 AutoBrief = autonomous client-intake & proposal agent for LightOn Plus Lab
 (Google for Startups AI Agents Challenge, Track 1). Repo: `C:\Users\rnd\autobrief`.
@@ -28,15 +28,29 @@ Plan: `C:\Users\rnd\.claude\plans\all-eligible-startups-will-zesty-lynx.md`.
 - **Eval harness** `eval/` (8 inquiries + gold, scorers, run_eval) — deterministic parts verified;
   full scored run now possible on Vertex.
 
+## ✅ Done & verified (Day 2)
+- **Router (custom `BaseAgent` orchestrator)** `autobrief/router.py` + `RouterClassifier`
+  (`sub_agents/router_classifier.py`, output_schema → `state['routing']`),
+  `ClarifierAgent`, `DeclineAgent`. Root is now `AutoBriefRouter` (proceed→pipeline,
+  need_clarification→clarifier, decline→decline). **Note:** LLM `transfer_to_agent`
+  is unusable in ADK 2.1.0 when an LlmAgent has a `SequentialAgent` peer (crashes:
+  `'SequentialAgent' object has no attribute 'mode'` in agent_transfer.py) — hence the
+  custom orchestrator + `disallow_transfer_to_*` on the peer LlmAgents.
+- **DeliveryAgent wired** into the pipeline tail, but ONLY when `AUTOBRIEF_ENABLE_MCP=1`
+  (interactive/deploy); eval path keeps it off so HITL doesn't stall headless runs.
+- **Full eval on Vertex: 8/8 PERFECT** — routing 100%, archetype 100%, scope Jaccard
+  1.0, price-in-band 100%, trajectory 100%, ~66 s/case. Metrics baked into README +
+  NARRATIVE. (Fixes that got there: conservative feature-key selection in
+  ScoperEstimator to stop archetype double-counting; classifier no longer declines
+  rush jobs or small-budget/small-scope landing pages.)
+- **Eval hardened**: `_run_one_with_retry` backs off on 429/RESOURCE_EXHAUSTED.
+- **Docs**: README.md (arch diagram + metrics), docs/NARRATIVE.md, docs/demo_script.md.
+
 ## ⏭️ Next (in priority order)
-1. **Run full eval on Vertex** → metrics + before/after table:
-   `python eval/run_eval.py` (with the env vars below).
-2. **Router**: add a proceed/clarify/decline `LlmAgent` as `root_agent`, then wire
-   DeliveryAgent + HITL into the flow after ProposalWriter.
-3. **Observability**: enable Cloud Trace/Logging (`--trace_to_cloud` on deploy).
-4. **Deploy to Cloud Run**: `adk deploy cloud_run --project lightonplus-apps --region us-central1 --with_ui --trace_to_cloud ./autobrief` (set min-instances=1).
-5. **Docs/demo**: README, architecture diagram, NARRATIVE.md, ≤3-min demo video.
-6. **Submit** before 2026-06-05 17:00.
+1. **Deploy to Cloud Run**: `adk deploy cloud_run --project lightonplus-apps --region us-central1 --with_ui --trace_to_cloud .` (set min-instances=1, AUTOBRIEF_ENABLE_MCP=1). Enables Cloud Trace/Logging observability.
+2. **Smoke-test the deployed URL** twice; confirm HITL approval → outbox artifacts; check trace shows steps + HITL pause.
+3. **GitHub**: push repo (add remote, push).
+4. **Demo video** (≤3 min) per docs/demo_script.md, then **submit** before 2026-06-05 17:00.
 
 ## ▶️ How to run locally (resume)
 PowerShell, from anywhere:

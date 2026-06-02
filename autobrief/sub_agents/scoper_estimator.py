@@ -48,13 +48,28 @@ Structured client inquiry:
 {inquiry}
 
 Steps:
-1. Classify the project into exactly one archetype and select the add-on feature
-   keys the inquiry implies (use only the allowed keys listed in the tool).
-2. Estimate a complexity multiplier (1.0 typical, up to 1.6 for novel/complex work).
-3. Set rush=true only if the stated deadline is clearly tight.
-4. Call `compute_estimate` once with those values. Do NOT guess any price or
+1. Classify the project into exactly one archetype.
+2. Select add-on feature keys — but be CONSERVATIVE. The archetype's base price
+   ALREADY includes its defining capability plus a standard auth/data/dashboard
+   layer, so never add a key that merely restates the archetype's core. In
+   particular:
+     - crud-saas-mvp already includes basic sign-up/login and a standard
+       list/pipeline dashboard. Add `auth_billing` only for paid billing
+       (e.g. Stripe); add `admin_dashboard` only for a SEPARATE privileged admin
+       area, not the normal user dashboard.
+     - ai-chat-assistant already includes the chat/RAG itself. Add `ai_feature`
+       only for an EXTRA AI capability beyond the core chat.
+     - data-dashboard already includes charts/visualization/filtering. `analytics`
+       means separate product-usage instrumentation, NOT the dashboard's own charts.
+   Select a key ONLY when the inquiry explicitly asks for that distinct capability.
+   Prefer the smallest correct set; do not infer features the client never mentioned.
+3. Estimate a complexity multiplier (1.0 typical, up to 1.6 for novel/complex work).
+4. Set rush=true only if the stated deadline is clearly tighter than a normal
+   2-6 week build (the tool applies a rush multiplier — a tight deadline is priced,
+   never a reason to refuse the work).
+5. Call `compute_estimate` once with those values. Do NOT guess any price or
    number yourself — the tool is the only source of pricing truth.
-5. After the tool returns, write a concise scope summary: the chosen archetype,
+6. After the tool returns, write a concise scope summary: the chosen archetype,
    the included features, the week range, the quoted price band, and a one-line
    justification. If the tool's notes mention exceeding the 6-week ceiling, flag
    that phasing may be needed.

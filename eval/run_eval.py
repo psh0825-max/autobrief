@@ -12,11 +12,10 @@ call fails (auth/network), we print a clear MODEL UNAVAILABLE banner and still
 exit 0 after running the deterministic gold-consistency self-check. The harness
 never hangs.
 
-KNOWN LIMITATION (Day-1): the proceed/clarify/decline ROUTER is not built yet —
-the pipeline always proceeds and always emits a proposal. We therefore DERIVE
-routing heuristically: a proposal in state -> "proceed". So routing accuracy
-will be 100% on proceed cases and 0% on the clarify/decline cases until the
-router lands. This is expected and surfaced in the report.
+ROUTING: the proceed/clarify/decline ROUTER (autobrief/agent.py) is the root
+agent. We derive its decision from the resulting session state (proposal ->
+proceed, clarification -> need_clarification, neither -> decline) so routing
+accuracy is scored across all three outcome types.
 
 Run:  python eval/run_eval.py     (works from any cwd; sys.path is fixed below)
 """
@@ -84,12 +83,53 @@ def _features_from_estimate(estimate: Optional[dict[str, Any]]) -> list[str]:
 
 
 def _derive_routing(state: dict[str, Any]) -> str:
-    """Heuristic routing for Day-1 (no router yet): proposal present -> proceed.
+    """Read the AutoBriefRouter's decision from session state.
 
-    Documented limitation: the pipeline always proceeds, so this only ever
-    yields "proceed". Replace with the real router's decision once it lands.
+    RouterClassifier writes a structured verdict to state['routing'] = {decision,
+    reason}, so we observe the decision directly. We fall back to inferring it from
+    which branch produced an artifact (proposal -> proceed, clarification ->
+    need_clarification, else decline) if the verdict is missing.
     """
-    return "proceed" if state.get("proposal") else "need_clarification"
+    verdict = state.get("routing")
+    if isinstance(verdict, dict) and verdict.get("decision"):
+        decision = verdict["decision"]
+        return getattr(decision, "value", decision)
+    if state.get("proposal"):
+        return "proceed"
+    if state.get("clarification"):
+        return "need_clarification"
+    return "decline"
+
+
+def _is_transient(exc: Exception) -> bool:
+    """A 429 / rate-limit / resource-exhausted error worth retrying with backoff."""
+    text = f"{type(exc).__name__} {exc}".lower()
+    return any(s in text for s in ("429", "resource_exhausted", "resourceexhausted",
+                                   "rate limit", "quota", "unavailable", "503"))
+
+
+async def _run_one_with_retry(
+    stem: str, raw_text: str, max_attempts: int = 5
+) -> dict[str, Any]:
+    """Run one case, retrying transient quota/rate errors with exponential backoff.
+
+    Vertex per-minute quotas (especially gemini-2.5-pro on a fresh project) can
+    return 429s under back-to-back eval runs. We back off (4s, 8s, 16s, 32s) and
+    retry so a transient throttle doesn't abort the whole scored run. Non-transient
+    errors (auth, bad request) are raised immediately.
+    """
+    delay = 4.0
+    for attempt in range(1, max_attempts + 1):
+        try:
+            return await _run_one(stem, raw_text)
+        except Exception as exc:
+            if attempt == max_attempts or not _is_transient(exc):
+                raise
+            print(f"  [{stem}] transient error (attempt {attempt}/{max_attempts}); "
+                  f"backing off {delay:.0f}s: {type(exc).__name__}")
+            await asyncio.sleep(delay)
+            delay *= 2
+    raise RuntimeError("unreachable")  # pragma: no cover
 
 
 async def _run_one(stem: str, raw_text: str) -> dict[str, Any]:
@@ -264,7 +304,7 @@ async def _main_async() -> int:
         gold = _load_gold(stem)
         t0 = time.perf_counter()
         try:
-            run = await _run_one(stem, raw)
+            run = await _run_one_with_retry(stem, raw)
         except Exception as exc:  # auth/network/model failure -> graceful stop.
             model_unavailable = True
             model_error = f"{type(exc).__name__}: {exc}"

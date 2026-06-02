@@ -29,6 +29,15 @@ class ProjectArchetype(str, Enum):
     integration_glue = "integration-glue"
 
 
+class RouterVerdict(BaseModel):
+    """AutoBriefRouter's triage decision for one inbound inquiry."""
+
+    decision: RoutingDecision
+    reason: str = Field(
+        description="One concise sentence explaining the routing decision."
+    )
+
+
 class ClientInquiry(BaseModel):
     """Structured form extracted from a raw inbound inquiry email."""
 
