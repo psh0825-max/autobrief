@@ -1,0 +1,15 @@
+{
+  "stem": "07_rush_job",
+  "expected_routing": "proceed",
+  "expected_archetype": "crud-saas-mvp",
+  "expected_feature_keys": [
+    "auth_billing"
+  ],
+  "expected_complexity": 1.0,
+  "expected_rush": true,
+  "expected_price_band_low_usd": 18000,
+  "expected_price_band_high_usd": 22000,
+  "expected_week_low": 5,
+  "expected_week_high": 6,
+  "rationale": "CRUD SaaS + Stripe with a hard 12-day deadline -> rush multiplier applies."
+}

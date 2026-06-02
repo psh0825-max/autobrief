@@ -1,0 +1,19 @@
+Subject: Mobile companion app for our fitness program
+
+Hey,
+
+I'm Dana Olsson, founder of StridePath (stridepath.fit). We run a coached running
+program and currently everything happens over email and a clunky web portal. We
+want a mobile companion app (iOS and Android) where our members can see their
+weekly training plan, log completed runs, and get push notifications reminding
+them about workouts.
+
+Must-haves: the mobile app itself, push notifications, and a small admin
+dashboard so our coaches can assign plans and see who's logging.
+
+Platform: mobile (both iOS and Android). Target users: our ~300 paying members.
+Timeline: we're aiming to launch in about 6 weeks. Budget is around $18-22k.
+
+Would appreciate a proposal with timeline and pricing. Thanks!
+Dana
+dana@stridepath.fit

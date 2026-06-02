@@ -1,0 +1,13 @@
+{
+  "stem": "08_out_of_scope_decline",
+  "expected_routing": "decline",
+  "expected_archetype": null,
+  "expected_feature_keys": [],
+  "expected_complexity": null,
+  "expected_rush": null,
+  "expected_price_band_low_usd": null,
+  "expected_price_band_high_usd": null,
+  "expected_week_low": null,
+  "expected_week_high": null,
+  "rationale": "Full licensed retail bank in 2 weeks for $500 — wildly out of the 2-6wk MVP scope."
+}

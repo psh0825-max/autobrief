@@ -1,0 +1,80 @@
+# AutoBrief pricing & scope rubric — the deterministic source of truth.
+# Aligned to LightOn Plus Lab's solo-studio model: 2-6 week MVPs.
+# All prices in USD. Days are solo engineering-days.
+
+archetypes:
+  landing+waitlist:
+    label: "Landing page + waitlist capture"
+    base_days: 6
+    base_price_usd: 3500
+  crud-saas-mvp:
+    label: "CRUD SaaS MVP (auth, data, dashboard)"
+    base_days: 18
+    base_price_usd: 12000
+  ai-chat-assistant:
+    label: "AI chat/assistant product (LLM + RAG)"
+    base_days: 14
+    base_price_usd: 10000
+  data-dashboard:
+    label: "Data dashboard / analytics app"
+    base_days: 12
+    base_price_usd: 8000
+  mobile-companion:
+    label: "Mobile companion app (Flutter)"
+    base_days: 20
+    base_price_usd: 14000
+  integration-glue:
+    label: "Integration / automation glue service"
+    base_days: 8
+    base_price_usd: 5000
+
+feature_addons:
+  auth_billing:
+    label: "Auth + billing (Stripe)"
+    days: 3
+    price_usd: 2000
+  ai_feature:
+    label: "Additional AI feature (LLM/vision/speech)"
+    days: 4
+    price_usd: 3500
+  third_party_integration:
+    label: "Third-party API integration"
+    days: 2
+    price_usd: 1500
+  admin_dashboard:
+    label: "Admin dashboard"
+    days: 3
+    price_usd: 2000
+  realtime:
+    label: "Realtime features (websockets/live)"
+    days: 3
+    price_usd: 2500
+  file_upload_storage:
+    label: "File upload + storage"
+    days: 1.5
+    price_usd: 1000
+  multilingual:
+    label: "Multilingual / i18n"
+    days: 1
+    price_usd: 800
+  analytics:
+    label: "Product analytics instrumentation"
+    days: 1.5
+    price_usd: 1200
+  notifications:
+    label: "Email/push notifications"
+    days: 1.5
+    price_usd: 1000
+
+multipliers:
+  complexity_min: 1.0
+  complexity_max: 1.6
+  rush: 1.25            # applied when deadline is shorter than base timeline
+
+bands:
+  contingency_pct: 0.15
+  utilization: 0.8      # solo studio runs at ~80% billable utilization
+  week_min: 2           # studio promise floor
+  week_max: 6           # studio promise ceiling
+  band_spread_pct: 0.10 # +/- around point estimate for the quoted band
+  band_rounding_usd: 500

@@ -1,0 +1,19 @@
+Subject: Analytics dashboard for our solar fleet
+
+Hi,
+
+I'm Tom Errand, co-founder of SunMetric (sunmetric.io). We operate rooftop solar
+installations and we already collect telemetry into a Postgres database. What we
+need is a clean web analytics dashboard so our operations team can visualize
+energy output, spot underperforming panels, and filter by site and date range.
+No need to capture new data — just read from our existing DB and chart it.
+
+We'd also like a third-party integration to pull weather data from an external
+API so we can correlate output with cloud cover.
+
+Platform: web. Users: our ops team (about 8 people, internal). Deadline: roughly
+4 weeks would be ideal. Budget: ~$10-12k.
+
+Can you send over a scoped proposal? Cheers,
+Tom
+tom@sunmetric.io

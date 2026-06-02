@@ -1,0 +1,18 @@
+Subject: Proposal request — internal CRM MVP for our agency
+
+Hi there,
+
+I'm Marcus Webb, ops director at Northgate Talent (northgatetalent.com). We're a
+12-person recruiting agency and we're drowning in spreadsheets. We need a simple
+web-based CRM MVP where our recruiters can sign up, log in, create and edit
+candidate records, attach notes and statuses, and see a dashboard of their
+pipeline. We'll also need Stripe billing because we want to charge a couple of
+partner agencies who'd use it as a sub-account later.
+
+Platform: web only. Target users: our recruiters plus a few external partners.
+Timeline: we'd like to launch in about 5 weeks. Budget is roughly $15-18k, which
+we think is realistic for an MVP.
+
+Could you put together a proposal with scope, timeline and price? Thanks,
+Marcus
+marcus@northgatetalent.com

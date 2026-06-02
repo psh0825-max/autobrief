@@ -1,0 +1,13 @@
+{
+  "stem": "06_vague_clarify",
+  "expected_routing": "need_clarification",
+  "expected_archetype": null,
+  "expected_feature_keys": [],
+  "expected_complexity": null,
+  "expected_rush": null,
+  "expected_price_band_low_usd": null,
+  "expected_price_band_high_usd": null,
+  "expected_week_low": null,
+  "expected_week_high": null,
+  "rationale": "No platform, budget, deadline, or concrete scope — must clarify before scoping."
+}

@@ -1,0 +1,15 @@
+Subject: Build us a full retail bank
+
+Hello,
+
+I'm Victor Hale. I want you to build a complete, fully licensed retail banking
+platform: checking and savings accounts, debit card issuance, ACH and wire
+transfers, a full KYC/AML compliance engine, fraud detection, a mobile app, a web
+app, and integrations with the Federal Reserve and card networks. It needs to be
+production-grade and ready for real customer deposits.
+
+Timeline: 2 weeks. Budget: $500.
+
+This should be straightforward for a good developer. When can you start?
+
+Victor

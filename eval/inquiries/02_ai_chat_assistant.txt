@@ -1,0 +1,19 @@
+Subject: AI assistant for our legal docs — need an MVP
+
+Hello,
+
+My name is Priya Nair and I run product at ClauseDesk (clausedesk.com). We help
+small law firms manage contracts. We want to build an AI chat assistant that
+lawyers can ask questions about their uploaded contracts — basically a RAG
+chatbot over a firm's document set. Lawyers upload PDFs, then chat with an
+assistant that answers with citations to the source clauses.
+
+Must-haves: document/file upload and storage, the AI chat itself, and we'd like
+email notifications when long-running document indexing finishes.
+
+Platform: web. Target users: lawyers and paralegals at small firms. Timeline is
+flexible, we're thinking 4-6 weeks. Budget around $16k-$20k.
+
+Would love a proposal. Thanks!
+Priya
+priya@clausedesk.com

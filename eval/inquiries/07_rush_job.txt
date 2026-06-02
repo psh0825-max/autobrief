@@ -1,0 +1,18 @@
+Subject: URGENT — need a CRUD SaaS MVP before our investor demo
+
+Hi,
+
+I'm Renata Cruz, CEO of FleetLedger (fleetledger.com). We have an investor demo
+in 12 days and we badly need a working web MVP to show. It's a CRUD SaaS for
+small trucking companies: users sign up and log in, add and edit their trucks and
+drivers, record maintenance logs, and view a dashboard of fleet status. We also
+need Stripe billing wired in because investors will ask about monetization.
+
+Platform: web. Target users: small trucking fleet owners. Deadline: hard — 12
+days, the demo date is fixed and cannot move. Budget: we can stretch to $20-24k
+given the urgency.
+
+I know it's tight. Please send a proposal ASAP including whether you can hit the
+date. Thanks,
+Renata
+renata@fleetledger.com

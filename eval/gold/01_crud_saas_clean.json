@@ -1,0 +1,15 @@
+{
+  "stem": "01_crud_saas_clean",
+  "expected_routing": "proceed",
+  "expected_archetype": "crud-saas-mvp",
+  "expected_feature_keys": [
+    "auth_billing"
+  ],
+  "expected_complexity": 1.0,
+  "expected_rush": false,
+  "expected_price_band_low_usd": 14500,
+  "expected_price_band_high_usd": 17500,
+  "expected_week_low": 5,
+  "expected_week_high": 6,
+  "rationale": "Clean CRUD SaaS with explicit auth+Stripe billing, web, ~5wk, $15-18k."
+}
