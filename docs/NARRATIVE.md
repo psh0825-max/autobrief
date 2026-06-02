@@ -80,7 +80,8 @@ inquiry routed to clarify, and an out-of-scope request routed to decline.
 
 ## Submission artifacts
 
-- **Deployed URL** (Cloud Run, `--with_ui`): _added on deploy_
+- **Deployed URL** (Cloud Run, `--with_ui`, Vertex AI, Cloud Trace on):
+  https://autobrief-g36me2m3ca-uc.a.run.app/dev-ui/?app=autobrief
 - **GitHub repo**: _added on push_
 - **Demo video** (≤3 min): see `docs/demo_script.md`
 - **This narrative + architecture diagram** (README.md) **+ eval results** (above).

@@ -3,6 +3,8 @@
 **Autonomous client-intake & proposal agent for a solo AI MVP studio.**
 Built for the Google for Startups AI Agents Challenge (Track 1) on **Google ADK + Vertex AI**.
 
+**Live demo (Cloud Run):** https://autobrief-g36me2m3ca-uc.a.run.app/dev-ui/?app=autobrief
+
 A raw inbound client email goes in. AutoBrief triages it, researches the client,
 classifies the project against a fixed rubric, computes a **deterministic** price
 and timeline, writes a client-ready brief + proposal, and — once a human approves —
@@ -139,7 +141,14 @@ adk deploy cloud_run \
 ```
 
 `--with_ui` gives a public HTTPS chat UI; `--trace_to_cloud` enables Cloud Trace /
-Logging so each agent step, tool call, and HITL pause is observable.
+Logging so each agent step, tool call, and HITL pause is observable. The deployed
+runtime service account needs `roles/aiplatform.user` (Vertex calls) and
+`roles/cloudtrace.agent` (trace export); `requirements.txt` includes
+`opentelemetry-exporter-gcp-trace` for the Cloud Trace span exporter.
+
+**Currently deployed:** https://autobrief-g36me2m3ca-uc.a.run.app — verified
+end-to-end (proceed → full proposal with the price guardrail holding; decline →
+polite reply), Vertex-backed, with Cloud Trace enabled.
 
 ## Layout
 

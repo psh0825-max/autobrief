@@ -46,11 +46,23 @@ Plan: `C:\Users\rnd\.claude\plans\all-eligible-startups-will-zesty-lynx.md`.
 - **Eval hardened**: `_run_one_with_retry` backs off on 429/RESOURCE_EXHAUSTED.
 - **Docs**: README.md (arch diagram + metrics), docs/NARRATIVE.md, docs/demo_script.md.
 
+- **DEPLOYED to Cloud Run** ✅ — **https://autobrief-g36me2m3ca-uc.a.run.app**
+  (`--with_ui --trace_to_cloud`, min-instances=1, public). Verified end-to-end on
+  Vertex: proceed → full proposal (price guardrail holds, $ band verbatim);
+  decline → polite reply. **Deploy gotchas solved:** (a) `--trace_to_cloud` needs
+  `opentelemetry-exporter-gcp-trace` in the agent's `requirements.txt` (added) or
+  the container fails to start; (b) the runtime SA
+  (`693521645262-compute@…`) needed `roles/aiplatform.user` + `roles/cloudtrace.agent`
+  (granted). First deploy is WITHOUT MCP (matches plan default: deploy shows
+  inference+drafts; MCP write actions run locally behind HITL).
+  - API: `POST /run` body is **camelCase** (`appName/userId/sessionId/newMessage`).
+    UI: `/dev-ui/?app=autobrief`.
+
 ## ⏭️ Next (in priority order)
-1. **Deploy to Cloud Run**: `adk deploy cloud_run --project lightonplus-apps --region us-central1 --with_ui --trace_to_cloud .` (set min-instances=1, AUTOBRIEF_ENABLE_MCP=1). Enables Cloud Trace/Logging observability.
-2. **Smoke-test the deployed URL** twice; confirm HITL approval → outbox artifacts; check trace shows steps + HITL pause.
-3. **GitHub**: push repo (add remote, push).
-4. **Demo video** (≤3 min) per docs/demo_script.md, then **submit** before 2026-06-05 17:00.
+1. **GitHub**: push repo (create remote `autobrief`, push `main`).
+2. **(Optional) MCP+HITL demo**: redeploy with `AUTOBRIEF_ENABLE_MCP=1` (or show locally) to demo Gmail-draft/Calendar/Drive/deck approval gates → outbox artifacts.
+3. **Demo video** (≤3 min) per docs/demo_script.md.
+4. **Submit** before 2026-06-05 17:00 (URL + GitHub + video + NARRATIVE/README).
 
 ## ▶️ How to run locally (resume)
 PowerShell, from anywhere:
