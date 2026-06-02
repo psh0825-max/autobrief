@@ -25,6 +25,28 @@ time building instead of triaging.
 
 ## Architecture
 
+```mermaid
+flowchart TD
+    U[/"Raw inbound inquiry email"/] --> RC["RouterClassifier (flash)<br/>output_schema → state.routing"]
+    RC -->|decline| DA["DeclineAgent (flash-lite)<br/>polite decline reply"]
+    RC -->|need_clarification| CA["ClarifierAgent (flash-lite)<br/>3-5 questions"]
+    RC -->|proceed| P
+    subgraph P["AutoBriefPipeline (SequentialAgent)"]
+        direction TB
+        IP["IntakeParser (flash)<br/>→ state.inquiry"] --> RS["Researcher (flash + google_search)<br/>→ state.research"]
+        RS --> SE["ScoperEstimator (flash)<br/>classify → compute_estimate()<br/>deterministic rubric → state.estimate"]
+        SE --> PW["ProposalWriter (pro)<br/>brief + proposal → state.proposal"]
+        PW --> DEL["DeliveryAgent (flash) *<br/>Drive · deck · calendar · Gmail draft"]
+    end
+    DEL -. "HITL: each write tool<br/>requires approval" .-> OUT[(outbox / Studio MCP server)]
+
+    classDef det fill:#e8f5e9,stroke:#43a047;
+    class SE det;
+```
+
+`*` DeliveryAgent is wired only when `AUTOBRIEF_ENABLE_MCP=1` (interactive/deploy).
+Plain-text version of the same flow:
+
 ```
                          user: raw inbound inquiry email
                                        │
