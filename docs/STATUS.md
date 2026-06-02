@@ -58,11 +58,20 @@ Plan: `C:\Users\rnd\.claude\plans\all-eligible-startups-will-zesty-lynx.md`.
   - API: `POST /run` body is **camelCase** (`appName/userId/sessionId/newMessage`).
     UI: `/dev-ui/?app=autobrief`.
 
-## ⏭️ Next (in priority order)
-1. **GitHub**: push repo (create remote `autobrief`, push `main`).
-2. **(Optional) MCP+HITL demo**: redeploy with `AUTOBRIEF_ENABLE_MCP=1` (or show locally) to demo Gmail-draft/Calendar/Drive/deck approval gates → outbox artifacts.
-3. **Demo video** (≤3 min) per docs/demo_script.md.
-4. **Submit** before 2026-06-05 17:00 (URL + GitHub + video + NARRATIVE/README).
+- **GitHub pushed** ✅ — https://github.com/psh0825-max/autobrief (public, `main`).
+- **HITL + MCP delivery verified end-to-end (local, `AUTOBRIEF_ENABLE_MCP=1`)** ✅ —
+  ScoperEstimator → MCP server connects → DeliveryAgent: `suggest_kickoff_slot`
+  runs un-gated (read), and all 4 write tools (`save_to_drive`,
+  `generate_proposal_deck`, `create_calendar_event`, `create_gmail_draft`) each
+  raise `adk_request_confirmation` (HITL approval gate). Guardrail proven.
+
+## ⏭️ Remaining (mostly user actions)
+1. **Demo video** (≤3 min) per docs/demo_script.md. For the live HITL demo, run the
+   ADK web UI locally with `AUTOBRIEF_ENABLE_MCP=1` (the deployed URL is MCP-off by
+   design), or `gcloud run services update autobrief --update-env-vars AUTOBRIEF_ENABLE_MCP=1`
+   to enable approval gates on the deployed service for the recording.
+2. **Submit** before 2026-06-05 17:00: deployed URL + GitHub repo + video +
+   NARRATIVE/README (eval metrics + architecture already inside).
 
 ## ▶️ How to run locally (resume)
 PowerShell, from anywhere:

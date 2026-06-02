@@ -71,7 +71,10 @@ instruction template (`{inquiry}`, `{research}`, `{estimate}` …). No custom pl
 
 1. **No auto-send.** The Gmail tool only ever creates a *draft*; every write action
    (Drive, deck, calendar, draft) is wrapped in an MCP `require_confirmation` HITL
-   gate. Sending is structurally impossible without a human.
+   gate. Sending is structurally impossible without a human. _Verified end-to-end:_
+   the read-only `suggest_kickoff_slot` runs un-gated, while all four write tools
+   (`save_to_drive`, `generate_proposal_deck`, `create_calendar_event`,
+   `create_gmail_draft`) each raise an `adk_request_confirmation` approval gate.
 2. **No hallucinated prices.** The LLM only *classifies* (archetype, feature keys,
    complexity, rush). All pricing/timeline math lives in the deterministic
    `estimate_scope()` tool driven by `rubric.yaml`. Prices always trace to the rubric.
