@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AutoBrief — pitch deck</title>
+<style>
+  :root { --ink:#10243e; --muted:#5b6b7e; --accent:#2563eb; --good:#16a34a; --bg:#f7f9fc; }
+  * { box-sizing: border-box; }
+  html,body { margin:0; padding:0; background:#0b1320; color:var(--ink);
+    font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+  .deck { max-width: 960px; margin: 0 auto; }
+  section { background:var(--bg); min-height: 100vh; padding: 8vh 7vw; display:flex;
+    flex-direction:column; justify-content:center; border-bottom:6px solid #0b1320;
+    scroll-snap-align:start; }
+  html { scroll-snap-type: y mandatory; }
+  h1 { font-size: 3rem; line-height:1.05; margin:.2em 0; }
+  h2 { font-size: 2rem; color:var(--accent); margin:.1em 0 .5em; }
+  p, li { font-size: 1.25rem; line-height:1.5; color:var(--ink); }
+  .muted { color:var(--muted); }
+  .big { font-size: 1.6rem; }
+  .tag { display:inline-block; background:var(--accent); color:#fff; padding:.25em .7em;
+    border-radius:999px; font-size:.95rem; letter-spacing:.02em; }
+  table { border-collapse:collapse; font-size:1.15rem; margin-top:.5em; background:#fff; }
+  th,td { border:1px solid #d8e0ea; padding:.5em .8em; text-align:left; }
+  th { background:#eef3fa; }
+  .good { color:var(--good); font-weight:700; }
+  code { background:#eef3fa; padding:.1em .4em; border-radius:5px; font-size:.95em; }
+  .flow { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:1.05rem;
+    background:#fff; border:1px solid #d8e0ea; border-radius:10px; padding:1em 1.2em; white-space:pre; overflow:auto; }
+  .pill { background:#fff; border:1px solid #d8e0ea; border-radius:10px; padding:.8em 1em; margin:.4em 0; }
+  a { color:var(--accent); }
+  .foot { position:fixed; right:14px; bottom:10px; color:#9fb0c3; font-size:.85rem; }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <section>
+    <span class="tag">Google for Startups AI Agents Challenge · Track 1</span>
+    <h1>AutoBrief</h1>
+    <p class="big">The autonomous client-intake &amp; proposal agent for a solo AI MVP studio.</p>
+    <p class="muted">Google ADK · Gemini on Vertex AI · MCP · Cloud Run</p>
+  </section>
+
+  <section>
+    <h2>The problem</h2>
+    <p>A one-person studio's revenue bottleneck isn't building — it's <b>winning the work</b>.</p>
+    <p>Every inbound inquiry = <b>3–5 hours</b> of reading, researching, scoping, pricing, and
+       proposal-writing <i>before any contract</i>. That caps the founder at ~3–4 serious inquiries a day.</p>
+  </section>
+
+  <section>
+    <h2>AutoBrief, in one breath</h2>
+    <p>A raw client email goes in. AutoBrief triages it, researches the client, prices it with a
+       <b>deterministic rubric</b>, writes a proposal, and — only after a human approves —
+       drafts the reply, calendar invite, Drive doc, and deck.</p>
+    <p class="big good">3–5 hours → ~1 minute of compute + a quick review.</p>
+  </section>
+
+  <section>
+    <h2>Architecture</h2>
+    <div class="flow">  raw inquiry email
+        │
+   RouterClassifier (flash, structured verdict)
+        ├─ decline  → DeclineAgent (polite reply)
+        ├─ clarify  → ClarifierAgent (3–5 questions)
+        └─ proceed  → AutoBriefPipeline (SequentialAgent)
+              IntakeParser → Researcher[google_search]
+              → ScoperEstimator → ProposalWriter
+              → DeliveryAgent *  (HITL-gated)
+  * Drive · deck · calendar · Gmail draft — each needs human approval</div>
+    <p class="muted">State flows via <code>output_key</code> + instruction templating. Tiers: flash-lite · flash · pro.</p>
+  </section>
+
+  <section>
+    <h2>The key idea: deterministic pricing</h2>
+    <p>The LLM <b>only classifies</b> (archetype, feature add-ons, complexity, rush).</p>
+    <p>Every dollar and week is computed by a Python tool over <code>rubric.yaml</code>.</p>
+    <p class="big">Quotes are reproducible and auditable — <b>no hallucinated prices</b>, ever.</p>
+  </section>
+
+  <section>
+    <h2>Guardrails (verified)</h2>
+    <div class="pill">🔒 <b>No auto-send.</b> Gmail only ever <i>drafts</i>; all 4 write tools each raise an
+       <code>adk_request_confirmation</code> HITL gate. The read-only slot helper runs un-gated.</div>
+    <div class="pill">💲 <b>Price-consistency.</b> The proposal quotes the rubric's band verbatim.</div>
+    <div class="pill">🛡️ <b>PII redaction</b> before research · <b>prompt-injection framing</b> (email = untrusted data).</div>
+    <div class="pill">🔭 <b>Observability.</b> Cloud Run + Cloud Trace — every step, tool call, and HITL pause is traced.</div>
+  </section>
+
+  <section>
+    <h2>Evaluation — 8 gold-labeled inquiries on Vertex</h2>
+    <table>
+      <tr><th>Metric</th><th>Result</th></tr>
+      <tr><td>Routing accuracy (proceed/clarify/decline)</td><td class="good">100%</td></tr>
+      <tr><td>Archetype accuracy</td><td class="good">100%</td></tr>
+      <tr><td>Scope accuracy (mean feature-key Jaccard)</td><td class="good">1.0</td></tr>
+      <tr><td>Price-in-band (±15%)</td><td class="good">100%</td></tr>
+      <tr><td>Tool-trajectory valid (zero un-approved sends)</td><td class="good">100%</td></tr>
+      <tr><td>Mean time / case</td><td>~66 s</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Before / after</h2>
+    <table>
+      <tr><th>Metric</th><th>Manual (founder)</th><th>AutoBrief</th></tr>
+      <tr><td>Time to first proposal</td><td>~3–5 hours</td><td class="good">~1 min + review</td></tr>
+      <tr><td>Inquiries / day</td><td>~3–4</td><td class="good">dozens</td></tr>
+      <tr><td>Price-in-band</td><td>—</td><td class="good">100%</td></tr>
+      <tr><td>Cost / proposal</td><td>~$480 (founder time)</td><td class="good">~$0.05 (LLM)</td></tr>
+    </table>
+    <p class="muted">Directly resellable as SaaS to any agency with the same intake bottleneck.</p>
+  </section>
+
+  <section>
+    <h1>Try it</h1>
+    <p>🌐 Live: <a href="https://autobrief-g36me2m3ca-uc.a.run.app/dev-ui/?app=autobrief">autobrief-g36me2m3ca-uc.a.run.app</a></p>
+    <p>📦 Code: <a href="https://github.com/psh0825-max/autobrief">github.com/psh0825-max/autobrief</a></p>
+    <p class="muted">Built with Google ADK + Gemini on Vertex AI.</p>
+  </section>
+
+</div>
+<div class="foot">AutoBrief · scroll / arrow-down to advance</div>
+</body>
+</html>
