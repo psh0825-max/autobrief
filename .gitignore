@@ -9,3 +9,8 @@ venv/
 eval/results/
 outbox/
 .DS_Store
+# OAuth secrets for real Google delivery — never commit these.
+.google_token.json
+.google_client_secret.json
+autobrief/mcp_server/.google_token.json
+autobrief/mcp_server/.google_client_secret.json

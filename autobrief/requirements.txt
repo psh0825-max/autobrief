@@ -4,6 +4,11 @@ pydantic>=2.6
 pyyaml>=6.0
 mcp>=1.27
 truststore>=0.10
+# Real delivery: Gmail draft / Calendar event / Drive doc via the Studio MCP server.
+google-api-python-client>=2.100
+google-auth>=2.30
+google-auth-httplib2>=0.2
+google-auth-oauthlib>=1.2   # one-time OAuth consent (autobrief.mcp_server.google_auth)
 # Required by `adk ... --trace_to_cloud` (Cloud Trace span exporter).
 opentelemetry-exporter-gcp-trace>=1.6.0
 opentelemetry-sdk>=1.20.0
