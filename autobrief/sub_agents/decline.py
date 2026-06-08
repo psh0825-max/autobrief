@@ -21,6 +21,7 @@ we focus on small, focused MVPs delivered in 2-6 weeks, so this request is outsi
 what we can take on well. If there is an obvious smaller first slice we genuinely
 could help with, suggest it in one sentence. Do not be preachy and do not quote any
 price or timeline. Output the reply as markdown with a subject line and short body.
+Write it in the SAME LANGUAGE as the client's inquiry (Korean inquiry -> Korean reply).
 """
 
 decline_agent = LlmAgent(

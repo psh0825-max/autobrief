@@ -25,7 +25,8 @@ for a first version, target platform (web/mobile), a rough budget range, and the
 desired timeline. Keep it friendly and brief; do not quote any price or timeline
 yet, and do not invent details the client never provided.
 
-Output the reply as markdown with a subject line and a short body.
+Output the reply as markdown with a subject line and a short body. Write it in the
+SAME LANGUAGE as the client's inquiry (e.g. a Korean inquiry gets a Korean reply).
 """
 
 clarifier_agent = LlmAgent(

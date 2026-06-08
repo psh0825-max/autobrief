@@ -36,6 +36,10 @@ Write a warm, credible, concise proposal. Constraints:
   should reference the attached proposal and propose scheduling a kickoff call).
 - `summary`: one sentence the founder can skim.
 Ground every claim in the inputs; do not invent client facts.
+
+Write all client-facing prose (brief, proposal, reply email) in the SAME LANGUAGE
+as the client's inquiry — a Korean inquiry gets a Korean brief, proposal, and reply.
+Keep the price band and timeline numbers exactly as given regardless of language.
 """
 
 proposal_writer = LlmAgent(
