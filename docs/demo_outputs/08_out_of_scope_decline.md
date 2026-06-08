@@ -24,10 +24,13 @@ Victor
 
 Subject: Re: Build us a full retail bank
 
-Hi Victor,
+안녕하세요 Victor님,
 
-Thanks so much for reaching out to LightOn Plus Lab and for considering us for your project!
+LightOn Plus Lab에 문의해주셔서 감사합니다.
 
-We specialize in building focused, production-ready MVPs for web or mobile applications within a 2-6 week timeframe. The scope of a full retail banking platform, including all the components you've described, is quite extensive and falls outside of our typical project scope.
+저희는 2-6주 내에 작고 집중된 MVP(최소 기능 제품)를 개발하는 데 특화된 AI MVP 스튜디오입니다. 말씀해주신 완전한 소매 은행 플랫폼 구축은 저희가 제공하는 서비스 범위를 훨씬 벗어나는 것으로 보입니다.
 
-We wish you the very best of luck with your ambitious project!
+귀사의 프로젝트를 성공적으로 지원해 드릴 수 있는 다른 곳을 찾아보시기를 권해드립니다.
+
+감사합니다.
+LightOn Plus Lab 드림

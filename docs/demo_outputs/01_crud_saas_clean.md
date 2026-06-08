@@ -27,49 +27,49 @@ marcus@northgatetalent.com
 
 - archetype: **crud-saas-mvp**
 - line items:
-  - CRUD SaaS MVP (auth, data, dashboard): 18.0d, $12,000.0
-  - Auth + billing (Stripe): 3.0d, $2,000.0
-- price band: **$18,000 - $22,000**
+  - CRUD SaaS MVP (auth, data, dashboard): 18.0d, $8,000
+  - Auth + billing (Stripe): 3.0d, $1,300
+- price band: **$12,000 - $14,500**
 - timeline: **5-6 weeks** | confidence 0.8
 
-## Proposal — price band verbatim from the estimate: $18,000 - $22,000, 5-6 weeks
+## Proposal — price band verbatim from the estimate: $12,000 - $14,500, 5-6 weeks
 
 Hi Marcus,
 
-Thanks for reaching out. It’s a classic story: a growing agency like Northgate Talent finding that the spreadsheets that got you here can no longer keep up. The need for a centralized, simple tool to manage candidates and pipelines is a clear sign of success, and we're excited by the opportunity to help you build it.
+Thanks for reaching out about a CRM MVP for Northgate Talent. Moving away from a system of spreadsheets that you've outgrown is a critical step for scaling an agency, and we can definitely help you build a simple, effective tool to solve this.
 
-### Our Approach: From Brief to Launch
+At LightOn Plus, we specialize in launching Minimum Viable Products like this in weeks, not months. Our process is transparent and designed for speed:
 
-We work in a clear, phased approach to get your MVP launched quickly and efficiently.
-1.  **Brief:** We'll start with a kickoff call to refine the project goals and user flows.
-2.  **Prototype:** We will quickly build a functional prototype, focusing on the core user experience of managing candidates and viewing the pipeline.
-3.  **Launch:** We'll deploy the web application, set up your Stripe integration, and get your team onboarded.
-4.  **Improve:** After launch, we'll gather feedback and plan for the next iteration.
+1.  **Brief:** We align on the core problem and scope.
+2.  **Prototype:** We design and build the functional MVP.
+3.  **Launch:** We deploy the application for your team to use.
+4.  **Improve:** We gather feedback and plan the next steps.
 
-### Proposed Scope: CRM MVP
+### Proposed Scope
 
-Based on your requirements, we'd propose an MVP focused on the following:
-*   **CRUD SaaS MVP (auth, data, dashboard):** A core web application allowing recruiters to sign up, log in, create/edit candidate records (with notes and statuses), and view a personal dashboard of their candidate pipeline.
-*   **Auth + billing (Stripe):** Secure user authentication and integration with Stripe to manage subscriptions for your external partners.
+Based on your requirements, we'd propose an MVP focused on the following core components:
+
+*   **CRUD SaaS MVP (auth, data, dashboard):** A central web platform for your recruiters. This includes user sign-up/login, the ability to create, read, update, and delete candidate records, and a simple dashboard to visualize the entire candidate pipeline.
+*   **Auth + billing (Stripe):** We'll integrate Stripe to handle subscriptions, allowing you to easily onboard and charge your partner agencies for access.
 
 ### Timeline & Investment
 
 *   **Timeline:** 5-6 weeks
-*   **Investment:** $18,000 - $22,000
+*   **Investment:** $12,000 - $14,500
 
-This is a fixed bid range. We will agree on a final price within this range during our kickoff call once we've confirmed the final scope.
+This is an all-inclusive band for the scope detailed above. There are no hidden fees.
 
 ### What's Included
 
-*   A fully functional web application as described above.
-*   30 days of post-launch support to fix bugs and ensure a smooth rollout.
-*   Full ownership of the code and intellectual property.
+*   Full ownership of the code and IP.
+*   Deployment to the web.
+*   30 days of post-launch support for bug fixes and questions.
 
-### Next Step
+### Next Steps
 
-The next step is a 30-minute kickoff call to align on the project plan and get started. I've sent a separate email with a link to book a time that works for you.
+If this proposal aligns with your expectations, the next step is a 30-minute kickoff call to finalize the scope and get started. Let us know what time works best for you.
 
-We are confident we can deliver a fantastic tool for your team.
+We're excited about the possibility of working with you.
 
 Best,
 
@@ -83,15 +83,12 @@ The LightOn Plus Lab Team
 
 Hi Marcus,
 
-Thanks again for detailing your requirements for the new CRM. It's a great project and a perfect fit for what our studio does best.
+It was great to learn more about the project at Northgate Talent. We've helped many agencies make the jump from spreadsheets to a custom platform, and it sounds like a perfect fit for our MVP process.
 
-As requested, I'm sharing our proposal, which outlines the project scope, an estimated timeline of 5-6 weeks, and an investment range of $18,000 - $22,000. We're confident we can build a great tool that helps you move beyond spreadsheets and scale your operations.
+I've attached our proposal, which outlines the scope, a timeline of 5-6 weeks, and a price band of $12,000 - $14,500.
 
-The next step would be a brief kickoff call to walk through the plan and answer any questions you might have. You can book a time on my calendar here: [Scheduler Link]
-
-Looking forward to connecting.
+Would you be free for a brief call next week to walk through it and discuss getting started? You can book a time that works for you directly on our calendar: [Your Calendar Link]
 
 Best,
 
-Principal
-LightOn Plus Lab
+Principal, LightOn Plus Lab

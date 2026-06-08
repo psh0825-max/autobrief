@@ -20,19 +20,19 @@ J
 
 ## Clarifying reply draft
 
-Subject: Re: app idea - Let's explore your concept!
+Subject: Re: app idea
 
 Hi J,
 
-Thanks so much for reaching out to LightOn Plus Lab! Your app idea sounds exciting, and we'd love to learn more about how we can help bring it to life.
+Thanks for reaching out to LightOn Plus Lab with your app idea! It sounds like an exciting concept with a lot of potential.
 
-To help us put together an accurate proposal, could you share a few more details?
+To help us understand your vision better and prepare an accurate proposal, could you please share a bit more detail on the following:
 
-*   **Who is your target audience?** (e.g., busy professionals, local communities, specific hobbyists?)
-*   **What are the absolute "must-have" features for the very first version?** (e.g., user profiles, search functionality, messaging, booking system?)
-*   **Which platform are you primarily targeting for your MVP – web, iOS, Android, or all?**
+*   **Core Problem & Target Audience:** What specific problem are you aiming to solve, and for whom?
+*   **Must-Have Features:** What are the absolute essential features for the very first version of your platform?
+*   **Target Platform:** Are you envisioning this as a web application, a mobile app (iOS, Android, or both), or something else?
 
-Once we have a clearer picture, we can dive into how LightOn Plus Lab can build your focused MVP quickly.
+Once we have a clearer picture, we'll be in a much better position to discuss how we can bring your idea to life.
 
 Looking forward to hearing from you!
 

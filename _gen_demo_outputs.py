@@ -50,15 +50,16 @@ async def run_one(stem: str) -> tuple[str, dict]:
 def fmt_proceed(st: dict) -> str:
     est = st.get("estimate") or {}
     prop = st.get("proposal") or {}
+    sym = est.get("currency_symbol", "")
     lines = [li for li in est.get("line_items", [])]
     items = "\n".join(
-        f"  - {li['label']}: {li['days']}d, ${li['price_usd']:,}" for li in lines
+        f"  - {li['label']}: {li['days']}d, {sym}{li['price_usd']:,}" for li in lines
     )
     return (
         "## Deterministic estimate (from rubric.yaml — the LLM never prices)\n\n"
         f"- archetype: **{est.get('archetype')}**\n"
         f"- line items:\n{items}\n"
-        f"- price band: **${est.get('price_band_low_usd'):,} - ${est.get('price_band_high_usd'):,}**\n"
+        f"- price band: **{est.get('price_band')}**\n"
         f"- timeline: **{est.get('week_low')}-{est.get('week_high')} weeks** "
         f"| confidence {est.get('confidence')}\n\n"
         f"## Proposal — price band verbatim from the estimate: "
