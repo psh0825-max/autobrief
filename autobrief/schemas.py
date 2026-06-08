@@ -81,6 +81,9 @@ class ScopeEstimate(BaseModel):
     """Deterministic output of estimate_scope(). All numbers trace to the rubric."""
 
     archetype: str
+    currency: str = "KRW"            # display currency (selectable: KRW | USD)
+    currency_symbol: str = "₩"
+    price_band: str = ""             # preformatted band, ready to quote verbatim
     line_items: list[LineItem] = Field(default_factory=list)
     base_days: float = 0.0
     total_days: float = 0.0
@@ -104,7 +107,7 @@ class Proposal(BaseModel):
     summary: str
     brief_markdown: str
     proposal_markdown: str
-    price_band_usd: str          # e.g. "$11,000 - $13,500"
+    price_band_usd: str          # quoting-currency band, verbatim from the estimate
     timeline_weeks: str          # e.g. "3-4 weeks"
     deck_url: Optional[str] = None
     reply_email_subject: Optional[str] = None

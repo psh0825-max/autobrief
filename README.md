@@ -113,6 +113,13 @@ a band; weeks clamped to the studio's 2–6 week model. Archetypes:
 `landing+waitlist`, `crud-saas-mvp`, `ai-chat-assistant`, `data-dashboard`,
 `mobile-companion`, `integration-glue`. See `autobrief/tools/rubric.yaml`.
 
+**Quoting currency is selectable.** The rubric is the source of truth in KRW;
+set `AUTOBRIEF_CURRENCY=USD` (or `KRW`, the default) to choose what clients are
+quoted in. USD is converted at display time from a configurable FX rate
+(`AUTOBRIEF_FX_USD`), and the estimator returns a preformatted `price_band`
+(e.g. `₩13,000,000 - ₩15,900,000` or `$9,500 - $12,000`) that the proposal uses
+verbatim — so the price guardrail holds in either currency.
+
 ## Evaluation
 
 `eval/` holds 8 synthetic inquiries (clean, vague→clarify, rush, out-of-scope→decline)

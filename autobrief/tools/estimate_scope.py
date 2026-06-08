@@ -26,11 +26,45 @@ def _round_to(value: float, step: int) -> int:
     return int(round(value / step) * step)
 
 
+def _resolve_currency(rubric: dict[str, Any], currency: str | None) -> tuple[str, dict[str, Any]]:
+    """Pick the display currency (arg > AUTOBRIEF_CURRENCY env > rubric base).
+
+    Returns (code, config). Falls back to the base currency if the requested one
+    is unknown. An optional ``AUTOBRIEF_FX_<CODE>`` env var overrides the rate.
+    """
+    base = rubric.get("currency", "KRW")
+    table = rubric.get("display_currencies", {}) or {}
+    requested = (currency or os.environ.get("AUTOBRIEF_CURRENCY") or base).upper()
+    if requested not in table:
+        requested = base
+    cfg = dict(table.get(requested) or {})
+    # Sensible defaults if the rubric entry is sparse.
+    cfg.setdefault("symbol", "")
+    cfg.setdefault("rate", 1.0)
+    cfg.setdefault("rounding", 1000)
+    cfg.setdefault("line_rounding", 1000)
+    cfg.setdefault("decimals", 0)
+    rate_override = os.environ.get(f"AUTOBRIEF_FX_{requested}")
+    if rate_override:
+        try:
+            cfg["rate"] = float(rate_override)
+        except ValueError:
+            pass
+    return requested, cfg
+
+
+def _fmt_money(value: float, symbol: str, decimals: int) -> str:
+    if decimals:
+        return f"{symbol}{value:,.{decimals}f}"
+    return f"{symbol}{int(round(value)):,}"
+
+
 def estimate_scope(
     archetype: str,
     feature_keys: list[str],
     complexity: float = 1.0,
     rush: bool = False,
+    currency: str | None = None,
 ) -> dict[str, Any]:
     """Compute a transparent scope + price estimate from the rubric.
 
@@ -54,6 +88,14 @@ def estimate_scope(
     addons = rubric["feature_addons"]
     mult = rubric["multipliers"]
     bands = rubric["bands"]
+
+    # Display currency (selectable): all rubric amounts are in the base currency
+    # and get converted to this for every money field returned.
+    ccy_code, ccy = _resolve_currency(rubric, currency)
+    fx = float(ccy["rate"])
+    symbol = ccy["symbol"]
+    line_rounding = int(ccy["line_rounding"])
+    decimals = int(ccy["decimals"])
 
     notes: list[str] = []
 
@@ -115,12 +157,19 @@ def estimate_scope(
             "consider phasing the scope."
         )
 
-    # --- Quoted price band around the point estimate ---
-    rounding = int(bands["band_rounding_usd"])
+    # --- Quoted price band around the point estimate (converted to display ccy) ---
+    rounding = int(ccy["rounding"])
     spread = float(bands["band_spread_pct"])
-    total_price = _round_to(total_price_raw, rounding)
-    price_band_low = _round_to(total_price_raw * (1 - spread), rounding)
-    price_band_high = _round_to(total_price_raw * (1 + spread), rounding)
+    total_price = _round_to(total_price_raw * fx, rounding)
+    price_band_low = _round_to(total_price_raw * (1 - spread) * fx, rounding)
+    price_band_high = _round_to(total_price_raw * (1 + spread) * fx, rounding)
+
+    # Convert each line item + subtotal into the display currency.
+    for li in line_items:
+        li["price_usd"] = _round_to(li["price_usd"] * fx, line_rounding)
+    subtotal = _round_to(subtotal * fx, line_rounding)
+
+    price_band = f"{_fmt_money(price_band_low, symbol, decimals)} - {_fmt_money(price_band_high, symbol, decimals)}"
 
     # --- Confidence: high for simple/typical, lower for complex/rush ---
     confidence = 0.9 - (clamped_complexity - 1.0) * 0.5
@@ -130,6 +179,9 @@ def estimate_scope(
 
     return {
         "archetype": archetype,
+        "currency": ccy_code,
+        "currency_symbol": symbol,
+        "price_band": price_band,  # preformatted, ready to quote verbatim
         "line_items": line_items,
         "base_days": round(base_days, 1),
         "total_days": round(total_days, 1),

@@ -20,10 +20,11 @@ Inputs (already gathered):
 - Scope summary: {estimate_summary}
 
 Write a warm, credible, concise proposal. Constraints:
-- `price_band_usd` MUST be taken verbatim from the estimate's
-  price_band_low_usd .. price_band_high_usd. These amounts are in KRW (Korean
-  won), so format them with a won sign and thousands separators, e.g.
-  "₩8,700,000 - ₩10,600,000". Never state any other price and never use "$".
+- `price_band_usd` MUST equal the estimate's `price_band` string EXACTLY (it is
+  already formatted in the studio's chosen quoting currency — see
+  estimate.currency, e.g. "₩8,700,000 - ₩10,600,000" or "$6,400 - $7,800").
+  Copy it verbatim: never convert it, reformat it, change the currency symbol,
+  or state any other number.
 - `timeline_weeks` MUST come from the estimate's week_low/week_high
   (e.g. "3-4 weeks").
 - `brief_markdown`: a crisp product brief (problem, target users, proposed MVP

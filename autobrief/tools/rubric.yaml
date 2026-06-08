@@ -10,6 +10,28 @@
 currency: KRW
 day_rate_krw: 600000
 
+# Display currency the studio quotes in — selectable by the founder via the
+# AUTOBRIEF_CURRENCY env var (KRW or USD). All amounts above are in the base
+# currency (KRW); each entry below converts them for display:
+#   rate          = units of THIS currency per 1 unit of the base (KRW)
+#   rounding      = round the quoted band/total to this step
+#   line_rounding = round each line-item price to this step
+# The USD rate is a default (~1,350 KRW/USD); override per run with
+# AUTOBRIEF_FX_USD (e.g. AUTOBRIEF_FX_USD=0.00072).
+display_currencies:
+  KRW:
+    symbol: "₩"
+    rate: 1.0
+    rounding: 100000
+    line_rounding: 100000
+    decimals: 0
+  USD:
+    symbol: "$"
+    rate: 0.00074
+    rounding: 500
+    line_rounding: 100
+    decimals: 0
+
 archetypes:
   landing+waitlist:
     label: "Landing page + waitlist capture"
