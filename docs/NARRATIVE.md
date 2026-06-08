@@ -83,5 +83,5 @@ inquiry routed to clarify, and an out-of-scope request routed to decline.
 - **Deployed URL** (Cloud Run, `--with_ui`, Vertex AI, Cloud Trace on):
   https://autobrief-g36me2m3ca-uc.a.run.app/dev-ui/?app=autobrief
 - **GitHub repo**: _added on push_
-- **Demo video** (≤3 min): see `docs/demo_script.md`
+- **Demo video** (2:26, narrated): https://storage.googleapis.com/lightonplus-apps-autobrief-demo/autobrief-demo.mp4
 - **This narrative + architecture diagram** (README.md) **+ eval results** (above).

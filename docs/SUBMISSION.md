@@ -11,7 +11,7 @@
 |---|---|
 | **Deployed URL** | https://autobrief-g36me2m3ca-uc.a.run.app/dev-ui/?app=autobrief |
 | **GitHub repo** | https://github.com/psh0825-max/autobrief |
-| **Demo video** | _paste the YouTube/Drive link after recording (script: `docs/demo_script.md`)_ |
+| **Demo video** | https://storage.googleapis.com/lightonplus-apps-autobrief-demo/autobrief-demo.mp4 (2:26, narrated) |
 | **Track** | Track 1 — build a new autonomous agent |
 
 ---
