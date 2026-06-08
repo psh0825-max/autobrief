@@ -65,13 +65,20 @@ Plan: `C:\Users\rnd\.claude\plans\all-eligible-startups-will-zesty-lynx.md`.
   `generate_proposal_deck`, `create_calendar_event`, `create_gmail_draft`) each
   raise `adk_request_confirmation` (HITL approval gate). Guardrail proven.
 
-## ⏭️ Remaining (mostly user actions)
-1. **Demo video** (≤3 min) per docs/demo_script.md. For the live HITL demo, run the
-   ADK web UI locally with `AUTOBRIEF_ENABLE_MCP=1` (the deployed URL is MCP-off by
-   design), or `gcloud run services update autobrief --update-env-vars AUTOBRIEF_ENABLE_MCP=1`
-   to enable approval gates on the deployed service for the recording.
-2. **Submit** before 2026-06-05 17:00: deployed URL + GitHub repo + video +
-   NARRATIVE/README (eval metrics + architecture already inside).
+## ✅ SUBMITTED
+- **Submitted to Devpost** (Google for Startups AI Agents Challenge) on 2026-06-08.
+- Demo video recorded (2:26, narrated deck) → hosted public on GCS:
+  https://storage.googleapis.com/lightonplus-apps-autobrief-demo/autobrief-demo.mp4
+- Submission thumbnail: `docs/thumbnail.png` (1200x720, 5:3).
+- Devpost fields, descriptions, and judge questions: see `docs/SUBMISSION.md`.
+- Language mirroring redeployed live (revision autobrief-00004-*) and verified
+  (Korean inquiry → Korean reply, correct routing) on the deployed URL.
+
+## 🧹 Post-submission cleanup (optional)
+- To cut idle cost: `gcloud run services update autobrief --region=us-central1 --min-instances=0`
+  (keep it at 1 until judging ends to avoid cold starts).
+- The public demo-video GCS bucket (`gs://lightonplus-apps-autobrief-demo`) is
+  world-readable; delete after judging if desired.
 
 ## ▶️ How to run locally (resume)
 PowerShell, from anywhere:
