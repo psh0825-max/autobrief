@@ -21,8 +21,9 @@ Inputs (already gathered):
 
 Write a warm, credible, concise proposal. Constraints:
 - `price_band_usd` MUST be taken verbatim from the estimate's
-  price_band_low_usd .. price_band_high_usd (format like "$11,000 - $13,500").
-  Never state any other price.
+  price_band_low_usd .. price_band_high_usd. These amounts are in KRW (Korean
+  won), so format them with a won sign and thousands separators, e.g.
+  "₩8,700,000 - ₩10,600,000". Never state any other price and never use "$".
 - `timeline_weeks` MUST come from the estimate's week_low/week_high
   (e.g. "3-4 weeks").
 - `brief_markdown`: a crisp product brief (problem, target users, proposed MVP

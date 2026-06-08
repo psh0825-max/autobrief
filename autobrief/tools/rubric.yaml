@@ -1,70 +1,76 @@
 # AutoBrief pricing & scope rubric — the deterministic source of truth.
 # Aligned to LightOn Plus Lab's solo-studio model: 2-6 week MVPs.
-# All prices in USD. Days are solo engineering-days.
+#
+# CURRENCY: all amounts are in KRW (Korean won). Field names keep the legacy
+# `_usd` suffix for code compatibility; the actual unit is set by `currency`.
+# Prices are derived from a day rate of KRW 400,000 / solo engineering-day
+# (price = days x 400,000), so days and prices stay in lockstep.
+currency: KRW
+day_rate_krw: 400000
 
 archetypes:
   landing+waitlist:
     label: "Landing page + waitlist capture"
     base_days: 6
-    base_price_usd: 3500
+    base_price_usd: 2400000      # 6 x 400,000 (KRW)
   crud-saas-mvp:
     label: "CRUD SaaS MVP (auth, data, dashboard)"
     base_days: 18
-    base_price_usd: 12000
+    base_price_usd: 7200000      # 18 x 400,000 (KRW)
   ai-chat-assistant:
     label: "AI chat/assistant product (LLM + RAG)"
     base_days: 14
-    base_price_usd: 10000
+    base_price_usd: 5600000      # 14 x 400,000 (KRW)
   data-dashboard:
     label: "Data dashboard / analytics app"
     base_days: 12
-    base_price_usd: 8000
+    base_price_usd: 4800000      # 12 x 400,000 (KRW)
   mobile-companion:
     label: "Mobile companion app (Flutter)"
     base_days: 20
-    base_price_usd: 14000
+    base_price_usd: 8000000      # 20 x 400,000 (KRW)
   integration-glue:
     label: "Integration / automation glue service"
     base_days: 8
-    base_price_usd: 5000
+    base_price_usd: 3200000      # 8 x 400,000 (KRW)
 
 feature_addons:
   auth_billing:
     label: "Auth + billing (Stripe)"
     days: 3
-    price_usd: 2000
+    price_usd: 1200000           # 3 x 400,000 (KRW)
   ai_feature:
     label: "Additional AI feature (LLM/vision/speech)"
     days: 4
-    price_usd: 3500
+    price_usd: 1600000           # 4 x 400,000 (KRW)
   third_party_integration:
     label: "Third-party API integration"
     days: 2
-    price_usd: 1500
+    price_usd: 800000            # 2 x 400,000 (KRW)
   admin_dashboard:
     label: "Admin dashboard"
     days: 3
-    price_usd: 2000
+    price_usd: 1200000           # 3 x 400,000 (KRW)
   realtime:
     label: "Realtime features (websockets/live)"
     days: 3
-    price_usd: 2500
+    price_usd: 1200000           # 3 x 400,000 (KRW)
   file_upload_storage:
     label: "File upload + storage"
     days: 1.5
-    price_usd: 1000
+    price_usd: 600000            # 1.5 x 400,000 (KRW)
   multilingual:
     label: "Multilingual / i18n"
     days: 1
-    price_usd: 800
+    price_usd: 400000            # 1 x 400,000 (KRW)
   analytics:
     label: "Product analytics instrumentation"
     days: 1.5
-    price_usd: 1200
+    price_usd: 600000            # 1.5 x 400,000 (KRW)
   notifications:
     label: "Email/push notifications"
     days: 1.5
-    price_usd: 1000
+    price_usd: 600000            # 1.5 x 400,000 (KRW)
 
 multipliers:
   complexity_min: 1.0
@@ -77,4 +83,4 @@ bands:
   week_min: 2           # studio promise floor
   week_max: 6           # studio promise ceiling
   band_spread_pct: 0.10 # +/- around point estimate for the quoted band
-  band_rounding_usd: 500
+  band_rounding_usd: 100000  # round the quoted band to the nearest KRW 100,000

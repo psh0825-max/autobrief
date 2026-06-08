@@ -185,7 +185,7 @@ def _confirm_consistency(records: list[dict[str, Any]]) -> bool:
         flag = "OK " if ok else "FAIL"
         print(
             f"  [{flag}] {rec['stem']:<28} "
-            f"${rec['expected_price_band_low_usd']:,}-${rec['expected_price_band_high_usd']:,}  "
+            f"₩{rec['expected_price_band_low_usd']:,}-₩{rec['expected_price_band_high_usd']:,}  "
             f"{rec['expected_week_low']}-{rec['expected_week_high']}wk"
         )
     return all_ok

@@ -5,8 +5,8 @@
   "expected_feature_keys": [],
   "expected_complexity": 1.0,
   "expected_rush": false,
-  "expected_price_band_low_usd": 3500,
-  "expected_price_band_high_usd": 4500,
+  "expected_price_band_low_usd": 2500000,
+  "expected_price_band_high_usd": 3000000,
   "expected_week_low": 2,
   "expected_week_high": 3,
   "rationale": "Simple one-page landing + email waitlist capture, ~2wk, small budget."

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>소품샵 재고 관리 웹앱 제안서 — LightOn Plus Lab</title>
+<style>
+  :root{ --ink:#1a2433; --muted:#5b6b7e; --accent:#2563eb; --good:#16a34a; --line:#e6ebf2; --bg:#eef2f7; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,'Segoe UI','Malgun Gothic',Roboto,sans-serif;line-height:1.65;}
+  .page{max-width:820px;margin:32px auto;background:#fff;border-radius:16px;
+    box-shadow:0 10px 40px rgba(20,36,62,.10);overflow:hidden;}
+  .hero{background:linear-gradient(135deg,#0b1320,#1c365e);color:#fff;padding:44px 48px;}
+  .hero .brand{font-size:.85rem;letter-spacing:.12em;color:#9fb8d8;text-transform:uppercase;}
+  .hero h1{margin:.3em 0 .2em;font-size:2.1rem;}
+  .hero .sub{color:#cdddf2;font-size:1.05rem;}
+  .meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px;}
+  .chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+    border-radius:999px;padding:.4em 1em;font-size:.95rem;}
+  .chip b{color:#fff}
+  .body{padding:40px 48px;}
+  h2{font-size:1.25rem;margin:1.8em 0 .5em;padding-bottom:.3em;border-bottom:2px solid var(--line);}
+  h3{font-size:1.05rem;margin:1.2em 0 .2em;color:var(--accent);}
+  p{margin:.5em 0;}
+  ul{margin:.4em 0 .8em;padding-left:1.3em;}
+  li{margin:.25em 0;}
+  .phase{display:flex;gap:14px;margin:.6em 0;}
+  .phase .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .price{display:flex;gap:24px;flex-wrap:wrap;margin:14px 0;}
+  .price .box{flex:1;min-width:200px;background:#f5f8fc;border:1px solid var(--line);
+    border-radius:12px;padding:18px 20px;}
+  .price .box .lbl{font-size:.85rem;color:var(--muted);}
+  .price .box .val{font-size:1.6rem;font-weight:800;color:var(--ink);}
+  .price .box .val.g{color:var(--good)}
+  .incl{background:#f0f7f1;border:1px solid #cfe9d4;border-radius:12px;padding:16px 20px;}
+  .cta{margin-top:18px;background:var(--accent);color:#fff;display:inline-block;
+    padding:.7em 1.4em;border-radius:10px;text-decoration:none;font-weight:600;}
+  .email{margin:0 48px 40px;background:#fbfcfe;border:1px dashed #c6d2e2;border-radius:12px;padding:22px 26px;}
+  .email .tag{font-size:.8rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;}
+  .email .subj{font-weight:700;margin:.3em 0 .8em;}
+  .email pre{white-space:pre-wrap;font-family:inherit;margin:0;color:#2c3a4d;}
+  .foot{padding:18px 48px 40px;color:var(--muted);font-size:.85rem;}
+  .note{max-width:820px;margin:0 auto 40px;color:#5b6b7e;font-size:.85rem;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="hero">
+    <div class="brand">LightOn Plus Lab · 제안서</div>
+    <h1>소품샵 재고 관리 웹앱</h1>
+    <div class="sub">박서준 대표님을 위한 맞춤형 MVP 제안</div>
+    <div class="meta">
+      <span class="chip">💰 <b>$14,500 – $17,500</b></span>
+      <span class="chip">🗓️ <b>5–6주</b></span>
+      <span class="chip">📦 <b>CRUD SaaS MVP + 구독 결제</b></span>
+    </div>
+  </div>
+
+  <div class="body">
+    <p>박서준 대표님 안녕하세요,</p>
+    <p>문의주신 소품샵 재고 관리 웹앱에 대한 제안을 드립니다. 저희는 대표님께서 겪고 계신
+       수동 재고 관리의 어려움을 깊이 공감하며, 직원들이 더 효율적으로 일할 수 있는
+       직관적이고 안정적인 맞춤형 솔루션을 제공하고자 합니다.</p>
+
+    <h2>우리의 접근 방식</h2>
+    <p>검증된 <b>Brief → Prototype → Launch → Improve</b> 4단계 프로세스로 아이디어를 현실로 만듭니다.</p>
+    <div class="phase"><div class="n">1</div><div><b>Brief &amp; Design (1주차)</b><br>킥오프 미팅으로 요구사항을 명확히 하고, UX 중심의 화면 설계(와이어프레임)를 진행합니다.</div></div>
+    <div class="phase"><div class="n">2</div><div><b>Prototype &amp; Build (2–4주차)</b><br>실제 작동하는 웹앱 개발에 착수하고, 매주 진행 상황을 공유하며 피드백을 즉시 반영합니다.</div></div>
+    <div class="phase"><div class="n">3</div><div><b>Launch &amp; Test (5주차)</b><br>완성된 앱을 배포하고, 대표님과 직원분들이 직접 사용하며 최종 피드백을 받는 집중 테스트를 진행합니다.</div></div>
+    <div class="phase"><div class="n">4</div><div><b>Improve &amp; Handover</b><br>피드백을 반영해 안정성을 높인 뒤, 전체 소스 코드와 운영 권한을 이전합니다.</div></div>
+
+    <h2>제안 범위</h2>
+    <h3>기본 CRUD SaaS MVP (인증 · 데이터 · 대시보드)</h3>
+    <ul>
+      <li>직원별 계정 생성 및 로그인</li>
+      <li>상품 정보(이름·가격·수량 등) 등록 / 수정 / 삭제</li>
+      <li>실시간 재고 현황을 시각적으로 보여주는 대시보드</li>
+    </ul>
+    <h3>인증 + 결제 (Stripe)</h3>
+    <ul>
+      <li>Stripe 연동으로 월 구독료를 정기 결제받는 시스템</li>
+    </ul>
+
+    <h2>기간 &amp; 견적</h2>
+    <div class="price">
+      <div class="box"><div class="lbl">예상 기간</div><div class="val">5–6주</div></div>
+      <div class="box"><div class="lbl">예상 견적</div><div class="val g">$14,500 – $17,500</div></div>
+    </div>
+    <p style="color:var(--muted);font-size:.9rem">견적은 제안된 기능 범위와 개발 복잡도를 기반으로 산정되었으며, 최종 범위 확정 시 변동될 수 있습니다.</p>
+
+    <h2>포함 사항</h2>
+    <div class="incl">
+      ✓ 프로젝트 완료 후 <b>30일간 무상 기술 지원</b><br>
+      ✓ 개발된 소프트웨어의 <b>전체 소스 코드 소유권 이전</b>
+    </div>
+
+    <h2>다음 단계</h2>
+    <p>본 제안을 검토해보시고 함께 시작하고 싶으시다면, 간단한 킥오프 미팅 일정을 잡았으면 합니다.
+       편하신 시간을 알려주시면 바로 조율하겠습니다.</p>
+    <a class="cta" href="#">킥오프 미팅 잡기 →</a>
+    <p style="margin-top:24px">감사합니다.<br><b>LightOn Plus Lab 드림</b></p>
+  </div>
+
+  <div class="foot">자동 생성: AutoBrief · 가격/기간은 결정형 룰북에서 산정 · 사람 검토 후 발송</div>
+</div>
+
+<div class="email">
+  <div class="tag">📧 자동 생성된 회신 메일 초안 (검토 후 발송)</div>
+  <div class="subj">제목: [LightOn Plus Lab] 쇼핑몰 재고 관리 웹앱 제작 제안서</div>
+  <pre>박서준 대표님 안녕하세요,
+
+LightOn Plus Lab입니다.
+
+문의주신 '소품샵 재고 관리 웹앱' 제작에 대한 제안서를 첨부해 드립니다.
+
+대표님의 요구사항을 바탕으로, 직원분들의 업무 효율을 높이고 매장 운영을 간소화할 수 있는 솔루션을 구상했습니다.
+
+제안서를 검토해보시고 궁금한 점이 있으시면 언제든지 편하게 연락 주세요. 구체적인 프로젝트 논의를 위해 간단한 온라인 킥오프 미팅을 진행하면 좋을 것 같습니다. 편하신 시간을 알려주시면 조율하겠습니다.
+
+감사합니다.
+
+LightOn Plus Lab 드림</pre>
+</div>
+
+<div class="note">※ 이 화면은 AutoBrief가 만든 제안서 JSON을 사람이 읽기 좋게 렌더링한 예시입니다.</div>
+
+</body>
+</html>
