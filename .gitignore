@@ -14,3 +14,5 @@ outbox/
 .google_client_secret.json
 autobrief/mcp_server/.google_token.json
 autobrief/mcp_server/.google_client_secret.json
+.google_sa_key.json
+autobrief/mcp_server/.google_sa_key.json

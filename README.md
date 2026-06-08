@@ -139,6 +139,33 @@ python eval/run_eval.py    # prints per-case + aggregate tables; writes eval/res
 The deterministic gold-consistency self-check (rubric ↔ estimator) also passes.
 <!-- METRICS:END -->
 
+## Real delivery (Gmail draft · Calendar · Drive)
+
+The Studio MCP server's delivery tools are **real** Google API calls, with a
+safe offline fallback. By default (eval / no-network demo) each tool writes a
+stub artifact under `outbox/`. Flip two flags and authorize once, and the same
+tools create a **real Gmail draft, a real tentative Calendar event, and a real
+Google Doc** in the founder's account:
+
+```powershell
+# 1) Create an OAuth Desktop client in GCP, save the JSON here:
+#    autobrief/mcp_server/.google_client_secret.json
+# 2) One-time browser consent (writes a refresh token):
+python -m autobrief.mcp_server.google_auth
+# 3) Enable real delivery:
+$env:AUTOBRIEF_ENABLE_MCP='1'
+$env:AUTOBRIEF_ENABLE_GOOGLE='1'
+adk web .
+```
+
+Scopes are minimal and safe by construction: `gmail.compose` (can **draft**,
+**cannot send**), `calendar.events`, `drive.file` (only files this app creates).
+The calendar insert uses `sendUpdates="none"`, so the client is never emailed
+automatically — every client-facing artifact still waits behind the HITL gate
+and the founder's review. Token/secret files are gitignored. If the token is
+absent or any API call fails, the tool transparently falls back to the local
+`outbox/` stub, so eval and offline demos are unaffected.
+
 ## Run it locally
 
 ```powershell

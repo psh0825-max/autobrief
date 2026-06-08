@@ -140,10 +140,13 @@ def create_calendar_event(title: str, start_iso: str, duration_minutes: int, att
         try:
             start_dt = datetime.datetime.fromisoformat(start_iso)
             end_dt = start_dt + datetime.timedelta(minutes=int(duration_minutes))
+            # Calendar requires a time zone; naive datetimes (e.g. from
+            # suggest_kickoff_slot) get the studio's zone (override via env).
+            tz = os.environ.get("AUTOBRIEF_TIMEZONE", "Asia/Seoul")
             body = {
                 "summary": title,
-                "start": {"dateTime": start_dt.isoformat()},
-                "end": {"dateTime": end_dt.isoformat()},
+                "start": {"dateTime": start_dt.isoformat(), "timeZone": tz},
+                "end": {"dateTime": end_dt.isoformat(), "timeZone": tz},
                 "attendees": [{"email": attendee}],
                 "status": "tentative",
             }
