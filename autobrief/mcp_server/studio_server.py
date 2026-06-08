@@ -13,12 +13,30 @@ Run standalone:  python autobrief/mcp_server/studio_server.py
 """
 from __future__ import annotations
 
+import base64
 import datetime
 import json
 import os
 import re
+from email.mime.text import MIMEText
 
 from mcp.server.fastmcp import FastMCP
+
+# This module is launched as a standalone script (see tools/mcp_toolsets.py),
+# so a package-relative import won't resolve. Try relative first (when imported
+# as part of the package), then fall back to the sibling module on sys.path.
+try:
+    from .google_clients import (  # type: ignore
+        get_calendar_service,
+        get_drive_service,
+        get_gmail_service,
+    )
+except ImportError:  # run as `python studio_server.py`
+    from google_clients import (  # type: ignore
+        get_calendar_service,
+        get_drive_service,
+        get_gmail_service,
+    )
 
 # outbox lives at the repo root (…/autobrief/outbox)
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -54,13 +72,41 @@ def create_gmail_draft(to: str, subject: str, body: str) -> str:
     Returns:
         A receipt with the local draft id/path. The draft is NOT sent.
     """
+    # Always keep a local audit copy (offline demo + traceability).
     folder = _ensure("drafts")
     draft_id = f"draft-{_stamp()}"
     path = os.path.join(folder, f"{draft_id}.json")
     with open(path, "w", encoding="utf-8") as fh:
         json.dump({"to": to, "subject": subject, "body": body}, fh, ensure_ascii=False, indent=2)
-    # TODO(real): Gmail API users.drafts.create with a MIME message.
-    return f"Draft created (NOT sent): {draft_id} -> to={to!r}, subject={subject!r}. Saved at {path}"
+
+    gmail = get_gmail_service()
+    if gmail is not None:
+        try:
+            mime = MIMEText(body, _charset="utf-8")
+            mime["to"] = to
+            mime["subject"] = subject
+            raw = base64.urlsafe_b64encode(mime.as_bytes()).decode("ascii")
+            created = (
+                gmail.users()
+                .drafts()
+                .create(userId="me", body={"message": {"raw": raw}})
+                .execute()
+            )
+            gid = created.get("id", "?")
+            # gmail.compose scope can create drafts but NOT send — send is
+            # structurally impossible with these credentials.
+            return (
+                f"REAL Gmail draft created (NOT sent): id={gid} -> to={to!r}, "
+                f"subject={subject!r}. Review at https://mail.google.com/mail/u/0/#drafts "
+                f"(local audit copy: {path})"
+            )
+        except Exception as exc:  # fall back to the local stub on any API error
+            return (
+                f"Gmail API unavailable ({exc!s:.120}); saved LOCAL draft "
+                f"{draft_id} -> to={to!r}, subject={subject!r}. Saved at {path}"
+            )
+
+    return f"Draft created (NOT sent, local): {draft_id} -> to={to!r}, subject={subject!r}. Saved at {path}"
 
 
 @mcp.tool()
@@ -88,8 +134,38 @@ def create_calendar_event(title: str, start_iso: str, duration_minutes: int, att
     }
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(record, fh, ensure_ascii=False, indent=2)
-    # TODO(real): Google Calendar API events.insert with status="tentative".
-    return f"Tentative event '{title}' at {start_iso} ({duration_minutes}m) for {attendee}. Saved at {path}"
+
+    cal = get_calendar_service()
+    if cal is not None:
+        try:
+            start_dt = datetime.datetime.fromisoformat(start_iso)
+            end_dt = start_dt + datetime.timedelta(minutes=int(duration_minutes))
+            body = {
+                "summary": title,
+                "start": {"dateTime": start_dt.isoformat()},
+                "end": {"dateTime": end_dt.isoformat()},
+                "attendees": [{"email": attendee}],
+                "status": "tentative",
+            }
+            created = (
+                cal.events()
+                # sendUpdates="none": the client is NOT emailed automatically;
+                # the founder reviews/sends after approval (no auto-notify).
+                .insert(calendarId="primary", body=body, sendUpdates="none")
+                .execute()
+            )
+            link = created.get("htmlLink", "(no link)")
+            return (
+                f"REAL tentative event '{title}' at {start_iso} ({duration_minutes}m) "
+                f"for {attendee} (no invite sent). {link} (local audit copy: {path})"
+            )
+        except Exception as exc:
+            return (
+                f"Calendar API unavailable ({exc!s:.120}); saved LOCAL event "
+                f"'{title}' at {start_iso}. Saved at {path}"
+            )
+
+    return f"Tentative event (local) '{title}' at {start_iso} ({duration_minutes}m) for {attendee}. Saved at {path}"
 
 
 @mcp.tool()
@@ -108,8 +184,31 @@ def save_to_drive(title: str, markdown: str) -> str:
     path = os.path.join(folder, name)
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(markdown)
-    # TODO(real): Google Drive API files.create (mimeType text/markdown or Doc).
-    return f"Saved to Drive: '{title}' -> https://drive.example/autobrief/{name} (local: {path})"
+
+    drive = get_drive_service()
+    if drive is not None:
+        try:
+            from googleapiclient.http import MediaInMemoryUpload
+
+            media = MediaInMemoryUpload(
+                markdown.encode("utf-8"), mimetype="text/markdown", resumable=False
+            )
+            # Convert to a native Google Doc so it's readable in Drive.
+            meta = {"name": title, "mimeType": "application/vnd.google-apps.document"}
+            created = (
+                drive.files()
+                .create(body=meta, media_body=media, fields="id,webViewLink")
+                .execute()
+            )
+            link = created.get("webViewLink", "(no link)")
+            return f"REAL Drive doc saved: '{title}' -> {link} (local audit copy: {path})"
+        except Exception as exc:
+            return (
+                f"Drive API unavailable ({exc!s:.120}); saved LOCAL doc "
+                f"'{title}' at {path}"
+            )
+
+    return f"Saved to Drive (local): '{title}' -> {path}"
 
 
 @mcp.tool()
