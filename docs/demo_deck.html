@@ -36,6 +36,11 @@
     background:var(--accent); color:#fff; border:0; border-radius:14px; padding:1.1em 2em;
     font-size:1.4rem; cursor:pointer; box-shadow:0 12px 40px rgba(0,0,0,.4); }
   #play small { display:block; font-size:.85rem; opacity:.85; margin-top:.4em; font-weight:400; }
+  #controls { position:fixed; left:50%; top:calc(50% + 90px); transform:translateX(-50%); z-index:50;
+    display:flex; gap:1em; align-items:center; background:#fff; border:1px solid #d8e0ea;
+    border-radius:10px; padding:.6em .9em; font-size:.95rem; box-shadow:0 6px 20px rgba(0,0,0,.2); }
+  #controls select { font-size:.95rem; max-width:240px; }
+  body.playing #controls { display:none; }
   body.playing section { transition: opacity .4s; }
   body.playing section:not(.current) { opacity:.18; }
   .cc { position:fixed; left:0; right:0; bottom:0; z-index:40; background:rgba(11,19,32,.92);
@@ -45,6 +50,11 @@
 </head>
 <body>
 <button id="play">▶ Play narrated demo<small>self-advancing + spoken — just screen-record this tab</small></button>
+<div id="controls">
+  <label>Voice: <select id="voiceSel"></select></label>
+  <label><input type="checkbox" id="muteChk"> 🔇 I'll narrate (mute TTS)</label>
+  <button id="testBtn" type="button">🔊 test</button>
+</div>
 <div class="cc" id="cc"></div>
 <div class="deck">
 
@@ -150,10 +160,44 @@
     "The impact: three to five hours drops to about a minute. Cost per proposal falls from hundreds of dollars of founder time to about five cents. And it's directly resellable as software to any agency with the same bottleneck.",
     "Try it yourself at the live Cloud Run URL, and the full source is on GitHub. That's AutoBrief — built with Google ADK and Gemini on Vertex AI."
   ];
-  var FALLBACK_MS = 7000;
   var cc = document.getElementById('cc');
   var playBtn = document.getElementById('play');
+  var voiceSel = document.getElementById('voiceSel');
+  var muteChk = document.getElementById('muteChk');
+  var testBtn = document.getElementById('testBtn');
   var synth = window.speechSynthesis;
+  var voices = [];
+
+  // English text read by a non-English (e.g. Korean) default voice sounds awful,
+  // so we force en-US and prefer the highest-quality English voice available.
+  function rank(v) {
+    var n = (v.name || '').toLowerCase();
+    var s = 0;
+    if (/^en[-_]/i.test(v.lang)) s += 100;            // English voice
+    if (/en[-_]us/i.test(v.lang)) s += 20;            // US English
+    if (n.indexOf('google') >= 0) s += 40;            // Chrome's network voice (good)
+    if (/natural|neural|online|aria|jenny|guy|libby|sonia/.test(n)) s += 35; // premium
+    if (n.indexOf('zira') >= 0 || n.indexOf('david') >= 0) s += 5; // basic MS, last resort
+    return s;
+  }
+
+  function loadVoices() {
+    voices = (synth && synth.getVoices) ? synth.getVoices() : [];
+    var english = voices.filter(function (v) { return /^en[-_]/i.test(v.lang); });
+    var list = (english.length ? english : voices).slice().sort(function (a, b) { return rank(b) - rank(a); });
+    voiceSel.innerHTML = '';
+    list.forEach(function (v) {
+      var o = document.createElement('option');
+      o.value = v.name; o.textContent = v.name + ' (' + v.lang + ')';
+      voiceSel.appendChild(o);
+    });
+    if (list.length) voiceSel.value = list[0].name; // best by default
+  }
+  if (synth) { loadVoices(); if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices; }
+
+  function pickVoice() {
+    return voices.filter(function (v) { return v.name === voiceSel.value; })[0] || null;
+  }
 
   function show(i) {
     sections.forEach(function (s, j) { s.classList.toggle('current', j === i); });
@@ -165,16 +209,31 @@
     return new Promise(function (resolve) {
       var done = false;
       var finish = function () { if (!done) { done = true; resolve(); } };
-      var timer = setTimeout(finish, FALLBACK_MS + (NARR[i] ? NARR[i].length * 55 : 0));
-      if (synth && window.SpeechSynthesisUtterance && NARR[i]) {
-        var u = new SpeechSynthesisUtterance(NARR[i]);
-        u.rate = 1.0; u.pitch = 1.0;
-        u.onend = function () { clearTimeout(timer); finish(); };
-        u.onerror = function () { clearTimeout(timer); finish(); };
-        try { synth.cancel(); synth.speak(u); } catch (e) { /* fallback timer */ }
+      var text = NARR[i] || '';
+      // Mute mode: no TTS — advance on a reading-paced timer so the user can
+      // record their own voice-over while slides + captions auto-advance.
+      var pacedMs = 2500 + text.length * 60;
+      if (muteChk.checked || !synth || !window.SpeechSynthesisUtterance || !text) {
+        setTimeout(finish, pacedMs);
+        return;
       }
+      var timer = setTimeout(finish, pacedMs + 4000); // fallback if onend never fires
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      var v = pickVoice(); if (v) u.voice = v;
+      u.rate = 0.95; u.pitch = 1.0;
+      u.onend = function () { clearTimeout(timer); finish(); };
+      u.onerror = function () { clearTimeout(timer); finish(); };
+      try { synth.cancel(); synth.speak(u); } catch (e) { /* fallback timer */ }
     });
   }
+
+  testBtn.addEventListener('click', function () {
+    if (!synth) return;
+    var u = new SpeechSynthesisUtterance('AutoBrief — autonomous client intake and proposal agent.');
+    u.lang = 'en-US'; var v = pickVoice(); if (v) u.voice = v; u.rate = 0.95;
+    try { synth.cancel(); synth.speak(u); } catch (e) {}
+  });
 
   async function run() {
     document.body.classList.add('playing');
