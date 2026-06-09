@@ -1,6 +1,6 @@
 # AutoBrief — Build Status & Resume Guide
 
-_Last saved: 2026-06-02 (Day 2). Submission deadline: **2026-06-05 17:00**._
+_Last saved: 2026-06-08 — **Submitted to Devpost**. (Deadline was 2026-06-05 17:00.)_
 
 AutoBrief = autonomous client-intake & proposal agent for LightOn Plus Lab
 (Google for Startups AI Agents Challenge, Track 1). Repo: `C:\Users\rnd\autobrief`.

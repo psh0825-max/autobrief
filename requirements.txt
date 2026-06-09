@@ -9,3 +9,6 @@ google-api-python-client>=2.100
 google-auth>=2.30
 google-auth-httplib2>=0.2
 google-auth-oauthlib>=1.2
+# Required by `adk ... --trace_to_cloud` (Cloud Trace span exporter).
+opentelemetry-exporter-gcp-trace>=1.6.0
+opentelemetry-sdk>=1.20.0
